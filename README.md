@@ -61,6 +61,34 @@ We simulated the ROI of a targeted retention campaign focusing on customers flag
 
 *For a detailed breakdown, please see the [Executive Summary](reports/executive_summary.md).*
 
+## Interactive Tableau Dashboard
+
+A companion Tableau workbook ([`dashboard/Book1.twb`](dashboard/Book1.twb)) translates the static analysis into an interactive decision tool with three connected dashboards:
+
+| # | Dashboard | Purpose |
+|---|---|---|
+| 1 | **Customer churn analysis** | Executive overview — KPI tiles (Total Customers, Churn Rate, ARPU, Revenue at Risk), churn distribution, churn rate by tenure cohort, monthly charges by churn, and revenue at risk by contract type. |
+| 2 | **Churn drivers dashboard** | Diagnostic view — top churn drivers (logistic regression coefficients), churn rate by tenure × contract heatmap, and a filterable high-risk customer table. |
+| 3 | **Retention campaign** | What-if simulator — interactive `Discount %` and `Acceptance rate %` sliders that drive live updates to Campaign Cost, Revenue Saved, Net ROI, and a Before/After retention impact bar chart. |
+
+**Data sources:** the workbook connects to `churn_scored.csv` (model-scored customer base with churn probabilities) and `feature_importance.csv` (top 15 logistic regression coefficients).
+
+**Key calculated fields:** `Churn Rate`, `Revenue at Risk`, `ARPU`, `Target Base`, `Campaign Cost`, `Revenue Saved`, `Net ROI`, `High Risk Flag`, `Churn Label`, `Tenure Group Sort`.
+
+To open: install Tableau Desktop or Tableau Public, then double-click `dashboard/Book1.twb`.
+
+### Dashboard 1 — Customer Churn Analysis (Executive Overview)
+![Executive overview dashboard with KPI tiles, churn distribution donut, churn rate by tenure bars, monthly charges box plot, and revenue at risk by contract pie](dashboard/01_customer_churn_analysis.jpeg)
+*High-level health check: 26.5% overall churn rate, $118K monthly revenue at risk, with month-to-month contracts driving nearly all of it.*
+
+### Dashboard 2 — Churn Drivers
+![Churn drivers dashboard showing top 15 logistic regression coefficients as a tornado chart, churn rate heatmap by tenure and contract, and a filterable high-risk customer table](dashboard/02_churn_drivers.jpeg)
+*Diagnostic deep-dive: tenure and contract type dominate the model; fiber optic and electronic check payments are the strongest service-level accelerators.*
+
+### Dashboard 3 — Retention Campaign Simulator
+![Interactive retention campaign dashboard with Discount % and Acceptance Rate sliders driving live KPIs for Campaign Cost, Revenue Saved, Net ROI, and a Before vs After revenue at risk bar chart](dashboard/03_retention_campaign.jpeg)
+*What-if planning tool: at default 10% discount and 30% acceptance rate, the campaign saves ~$30K/month in retained revenue against a ~$3.5K/month spend.*
+
 ## Assumptions & Limitations
 
 - **Campaign acceptance rate (30%)** is based on industry benchmarks for telco win-back campaigns at 10% discount levels, not empirical A/B test results from this dataset.
@@ -73,6 +101,7 @@ We simulated the ROI of a targeted retention campaign focusing on customers flag
 - **Data Manipulation:** `pandas`, `numpy`
 - **Machine Learning:** `scikit-learn` (Logistic Regression, Decision Trees)
 - **Data Visualization:** `matplotlib`, `seaborn`
+- **Interactive Dashboarding:** Tableau Desktop / Tableau Public
 - **Environment:** Jupyter Notebooks (`nbformat`)
 
 ## How to Run
@@ -106,6 +135,9 @@ We simulated the ROI of a targeted retention campaign focusing on customers flag
 customer-churn-analysis/
 │
 ├── data/                       # Raw datasets
+├── dashboard/                  # Interactive Tableau workbook
+│   ├── Book1.twb               # 3 dashboards, 15 worksheets, 2 parameters
+│   └── churn_dashboard_layout.md
 ├── notebooks/                  # Structured analytical narratives 
 │   ├── 01_exploration.ipynb
 │   └── 02_modeling.ipynb
